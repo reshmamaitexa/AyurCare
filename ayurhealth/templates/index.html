@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYURCARE</title>
+
+    <link rel="stylesheet" href="../static/index/css/style-home.css" type="text/css" />
+
+    <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="../static/index/images/favicon.png"
+    />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:image" content="" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+</head>
+<body>
+    
+    <!-- Start Header -->
+    <header>
+        <section class="wrapper">
+            <div class="left">
+                <h1><a href="{% url 'index' %}">AYURCARE</a></h1>
+            </div>
+            <!-- <div class="middle">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    
+                </ul>
+            </div> -->
+            <div class="right">
+                <ul>
+                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'admin_login' %}">Login</a></li>
+                    
+                </ul>
+            </div>
+        </section>
+    </header>
+
+    <!-- Start Spotlight -->
+    <section id="spotlight">
+        <section class="wrapper">
+            <div class="top">
+                <h1> A Healthy Outside Starts  <br> From The Inside</h1>
+                <h3>Simple, fast and efficient</h3>
+                <a href="{% url 'admin_login' %}" class="button">GET STARTED</a>
+            </div>
+        </section>
+    </section>
+
+    <!-- Start Categories -->
+
+    <section id="steps">
+        <section class="wrapper">
+            <h1>AYURVEDA</h1>
+            <div class="container">
+                <div class="item">
+                    <ul>
+                        <li>
+                            <a href="#">
+                                <img src="../static/index/images/categories/finance.png" alt="step-icon">
+                                <h3>STEP1:</h3>
+                                <h3>Collect Data And Identify Pathology</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../static/index/images/categories/university.png" alt="step-icon">
+                                <h3>STEP2:</h3>
+                                <h3>Evaluate Data Reliability </h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../static/index/images/categories/graphic.png" alt="step-icon">
+                                <h3>STEP3:</h3>
+                                <h3>Determine The Distinctive Features</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../static/index/images/categories/hospital.png" alt="step-icon">
+                                <h3>STEP4:</h3>
+                                <h3>Arrive At A Diagnosis </h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../static/index/images/categories/restaurant.png" alt="step-icon">
+                                <h3>STEP5:</h3>
+                                <h3>Check Diagnosis Criteria</h3>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <img src="../static/index/images/categories/website.png" alt="step-icon">
+                                <h3>STEP6:</h3>
+                                <h3>Resolve Diagnostic Uncertainity</h3>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </section>
+
+
+    <!-- Start Lender -->
+
+    <section id="lender">
+        <section class="wrapper">
+            <div class="left">
+                <p>BECAUSE WE CANNOT SCRUB OUR INNER BODY, WE NEED TO LEARN A FEW SKILLS TO HELP CLEANSE OUR TISSUES,ORGANS,MIND. THIS IS THE ART OF AYURVEDA</p>
+                    <br><br>
+                <div class="button">
+                    <a href="{% url 'admin_login' %}" class="button">GET STARTED</a>
+                </div> 
+            </div>
+            <div class="right">
+                <img src="https://img.freepik.com/free-vector/homeopathy-abstract-concept-illustration_335657-5036.jpg?w=2000" alt="" width="300px" height="400px">
+            </div>
+        </section>
+    </section>
+    
+    <!-- Start shops -->
+
+    <section id="shops">
+        <section class="wrapper">
+            <div class="left">
+                <img src="https://static.vecteezy.com/system/resources/previews/014/177/619/non_2x/alternative-medicine-or-herbal-cure-of-energy-therapies-with-ginseng-root-essential-oil-and-seeds-in-flat-cartoon-hand-drawn-templates-illustration-vector.jpg" alt="" width="300px" height="400px">
+            </div>
+            <div class="right">
+               <p>BEAUTY DOES NOT TAKE FORM FROM THE PARTS OF THE BODY, BUT FROM THE WHOLE OF OUR EXISTENCE </p>
+               <br><br>
+                <div class="button">
+                    <a href="{% url 'admin_login' %}" class="button">GET STARTED</a>
+                </div> 
+            </div>
+        </section>
+    </section>
+
+
+    <!-- Start Footer -->
+    <footer>
+        <h3 style="color: white; text-align:center">Copyright@2023</h3>       
+    </footer>
+    
+</body>
+</html>

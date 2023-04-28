@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Credits</title>
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../../static/main/images/favicon.png">
+    <!-- Pignose Calender -->
+    <link href="./plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
+    <!-- Chartist -->
+    <link rel="stylesheet" href="./plugins/chartist/css/chartist.min.css">
+    <link rel="stylesheet" href="./plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
+    <link href="./plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Custom Stylesheet -->
+    <link href="./plugins/jquery-steps/css/jquery.steps.css" rel="stylesheet">
+    <link href="../../static/main/css/style.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!--*******************
+        Preloader start
+    ********************-->
+    <div id="preloader">
+        <div class="loader">
+            <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+            </svg>
+        </div>
+    </div>
+    <!--*******************
+        Preloader end
+    ********************-->
+
+    
+    <!--**********************************
+        Main wrapper start
+    ***********************************-->
+    <div id="main-wrapper">
+
+        <!--**********************************
+            Nav header start
+        ***********************************-->
+        <div class="nav-header">
+            <div class="brand-logo">
+                <a href="{% url 'admin_dashboard' %}">
+                    AYURCARE
+                </a>
+            </div>
+        </div>
+        <!--**********************************
+            Nav header end
+        ***********************************-->
+
+        <!--**********************************
+            Header start
+        ***********************************-->
+        <div class="header">    
+            <div class="header-content clearfix">
+                
+                <div class="nav-control">
+                    <div class="hamburger">
+                        <span class="toggle-icon"><i class="icon-menu"></i></span>
+                    </div>
+                </div>
+                <div class="header-left">
+                    <div class="input-group icons">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <ul class="clearfix">
+                        <li class="icons dropdown">
+                            <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
+                                <span class="activity active"></span>
+                                <img src="../../static/main/images/user/1.png" height="40" width="40" alt="">
+                            </div>
+                            <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
+                                <div class="dropdown-content-body">
+                                    <ul>
+                                        <li>
+                                            <a href="my-account.html"><i class="icon-user"></i> <span>Profile</span></a>
+                                        </li>
+                                        <hr class="my-2">
+                                        <li><a href="#"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <!--**********************************
+            Header end ti-comment-alt
+        ***********************************-->
+
+        <!--**********************************
+            Sidebar start
+        ***********************************-->
+        <div class="nk-sidebar">           
+            <div class="nk-nav-scroll">
+                <ul class="metismenu" id="menu">
+                    <li>
+                        <a href="{% url 'admin_dashboard' %}" class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Patients</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'admin_view_allpatients' %}">Pending</a></li>
+                            <li><a href="{% url 'admin_view_all_approved_patients' %}">Approved</a></li>
+                        </ul>
+                    </li>
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Doctors</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'admin_add_doctorpage' %}">Add</a></li>
+                            <li><a href="{% url 'admin_view_doctors' %}">View</a></li>
+                        </ul>
+                    </li>
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Remedy</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'admin_add_remedy' %}">Add</a></li>
+                            <li><a href="{% url 'admin_view_remedy' %}">View</a></li>
+                        </ul>
+                    </li>
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Packages</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'admin_add_package_page' %}">Add</a></li>
+                            <li><a href="{% url 'admin_view_packages' %}">View</a></li>
+                        </ul>
+                    </li>
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Medicine</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'admin_add_medicine_page' %}">Add</a></li>
+                            <li><a href="{% url 'admin_view_medicine' %}">View</a></li>
+                        </ul>
+                    </li>
+                    <!-- <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-envelope menu-icon"></i><span class="nav-text">Support</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./contact.html">Contact</a></li>
+                        </ul>
+                    </li> -->
+                    <!-- <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-user menu-icon"></i> <span class="nav-text">Profile</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="./my-account.html">Account</a></li>
+                        </ul>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+        <!--**********************************
+            Content body start
+        ***********************************-->
+        <div class="content-body">
+
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Profile</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Account</a></li>
+                    </ol>
+                </div>
+            </div>
+            <!-- row -->
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Edit Remedy</h4>
+                        <div class="basic-form">
+                            <form method="post" action="{% url 'remedyformupdate' Data.id %}" >
+                                {% csrf_token %}
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label>Disease</label>
+                                        <input type="text" class="form-control" name="disease" value="{{Data.disease}}" >
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Symptoms</label>
+                                        <input type="text" class="form-control" name="symptoms" value="{{Data.symptoms}}" >
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label>Remedy</label>
+                                        <input type="text" class="form-control" name="remedy" value="{{Data.remedy}}">
+                                    </div>
+                                    
+                                   
+                                    <button type="submit" class="btn mb-1 btn-rounded btn-primary">ADD</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <!-- #/ container -->
+        </div>
+        <!--**********************************
+            Content body end
+        ***********************************-->
+        
+        
+        <!--**********************************
+            Footer start
+        ***********************************-->
+        <div class="footer">
+            <div class="copyright">
+                <p>Copyright &copy; 2023</p>
+            </div>
+        </div>
+        <!--**********************************
+            Footer end
+        ***********************************-->
+    </div>
+    <!--**********************************
+        Main wrapper end
+    ***********************************-->
+
+    <!--**********************************
+        Scripts
+    ***********************************-->
+    <script src="../../static/main/plugins/common/common.min.js"></script>
+    <script src="../../static/main/js/custom.min.js"></script>
+    <script src="../../static/main/js/settings.js"></script>
+    <script src="../../static/main/js/gleek.js"></script>
+    <script src="../../static/main/js/styleSwitcher.js"></script>
+
+    <!-- Chartjs -->
+    <script src="../../static/main/plugins/chart.js/Chart.bundle.min.js"></script>
+    <!-- Circle progress -->
+    <script src="../../static/main/plugins/circle-progress/circle-progress.min.js"></script>
+    <!-- Datamap -->
+    <script src="../../static/main/plugins/d3v3/index.js"></script>
+    <script src="../../static/main/plugins/topojson/topojson.min.js"></script>
+    <script src="../../static/main/plugins/datamaps/datamaps.world.min.js"></script>
+    <!-- Morrisjs -->
+    <script src="../../static/main/plugins/raphael/raphael.min.js"></script>
+    <script src="../../static/main/plugins/morris/morris.min.js"></script>
+    <!-- Pignose Calender -->
+    <script src="../../static/main/plugins/moment/moment.min.js"></script>
+    <script src="../../static/main/plugins/pg-calendar/js/pignose.calendar.min.js"></script>
+    <!-- ChartistJS -->
+    <script src="../../static/main/plugins/chartist/js/chartist.min.js"></script>
+    <script src="../../static/main/plugins/chartist-plugin-tooltips/js/chartist-plugin-tooltip.min.js"></script>
+
+    <script src="../../static/main/plugins/tables/js/jquery.dataTables.min.js"></script>
+    <script src="../../static/main/plugins/tables/js/datatable/dataTables.bootstrap4.min.js"></script>
+    <script src="../../static/main/plugins/tables/js/datatable-init/datatable-basic.min.js"></script>
+
+    <script src="../../static/main/plugins/jquery-steps/build/jquery.steps.min.js"></script>
+    <script src="../../static/main/plugins/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../static/main/js/plugins-init/jquery-steps-init.js"></script>
+
+
+
+    <script src="../../static/main/js/dashboard/dashboard-1.js"></script>
+
+</body>
+
+</html>
