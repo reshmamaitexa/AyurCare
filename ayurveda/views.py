@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine
-from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review
+from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer
 
 
 # Create your views here.
@@ -281,8 +281,10 @@ class PatientSearchDoctorAPIView(GenericAPIView):
         print(query)
        
         i = Doctor.objects.filter(doctorspecialization__icontains=query) or Doctor.objects.filter(doctor_available_days__icontains=query)
+        for dta in i:
+            print(dta)
         
-        data = [{'doctorname':info.doctorname,'doctoremail':info.doctoremail, 'doctorphone':info.doctorphone, 'doctorspecialization':info.doctorspecialization, 'doctorgender':info.doctorgender, 'doctor_available_days':info.doctor_available_days, 'doctor_available_time':info.doctor_available_time,'doctorprofile_photo':info.doctorprofile_photo}
+        data = [{'doctorname':info.doctorname,'doctoremail':info.doctoremail, 'doctorphone':info.doctorphone, 'doctorspecialization':info.doctorspecialization, 'doctorgender':info.doctorgender, 'doctor_available_days':info.doctor_available_days, 'doctor_available_time':info.doctor_available_time}
                 for info in i]
         return Response({'data':data, 'message':'Successfully fetched', 'success':True}, status=status.HTTP_200_OK)
 
@@ -374,12 +376,49 @@ class SingleMedicineAPIView(GenericAPIView):
         return Response({'data': serializer.data, 'message':'single medicine data', 'success':True}, status=status.HTTP_200_OK)
 
 
+
+# ----------------------------------------- Patient add review and single view -----------------------------------------------------
+
+class PatientReviewAPIView(GenericAPIView):
+    serializer_class = ReviewSerializer
+
+    def post(self, request):
+        patient = request.data.get('patient')
+        feedback = request.data.get('feedback')
+        rating = request.data.get('rating')
+        date = request.data.get('date')
+        review_photo = request.data.get('review_photo')
+        review_status="0"
+
+
+        serializer = self.serializer_class(data= {'patient':patient, 'feedback':feedback,'rating':rating,'date':date,'review_photo':review_photo,'review_status':review_status})
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'message':'Review Added successfully', 'success':True}, status = status.HTTP_201_CREATED)
+        return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class SingleReviewAPIView(GenericAPIView):
+    def get(self, request, id):
+        queryset = Patient.objects.all().filter(pk=id).values()
+        for i in queryset:
+            patient_id=i['id']
+        data=Review.objects.get(patient=patient_id)
+        serializer =ReviewSerializer(data)
+        return Response({'data': serializer.data, 'message':'single Review data', 'success':True}, status=status.HTTP_200_OK)
+
+
 # ----------------------------------------- Get Image Data -----------------------------------------------------
 
-class Get_ImageAPIView(GenericAPIView):
-    def get(self, request,pk):
-        my_model = get_object_or_404(Packages, pk=pk)
-        image_base64 = my_model.package_photo
-        return Response({'data': image_base64, 'message':'Image data', 'success':True}, status=status.HTTP_200_OK)
-        # else:
-        #     return Response({'data':'No data available', 'success':False}, status=status.HTTP_400_BAD_REQUEST)
+# class Get_ImageAPIView(GenericAPIView):
+#     def get(self, request,pk):
+#         my_model = get_object_or_404(Packages, pk=pk)
+#         image_base64 = my_model.package_photo
+#         return Response({'data': image_base64, 'message':'Image data', 'success':True}, status=status.HTTP_200_OK)
+#         # else:
+#         #     return Response({'data':'No data available', 'success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+

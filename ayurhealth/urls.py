@@ -41,6 +41,8 @@ urlpatterns = [
    path('admin_edit_medicine/<int:id>', views.admin_edit_medicine, name='admin_edit_medicine'),
    path('<int:id>/medicineformupdate/', views.medicineformupdate, name='medicineformupdate'),
 
+   path('admin_view_review', views.admin_view_review, name='admin_view_review'),
+
 
 
 ]

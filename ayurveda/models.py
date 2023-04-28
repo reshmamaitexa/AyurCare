@@ -92,3 +92,15 @@ class Medicine(models.Model):
 
     def __str__(self):
         return self.medicine_name
+
+
+class Review(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    feedback = models.CharField(max_length=500)
+    rating = models.CharField(max_length=50)
+    date = models.DateField()
+    review_photo = models.ImageField(upload_to='images')
+    review_status = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.feedback

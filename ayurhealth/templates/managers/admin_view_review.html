@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Dashboard - Ayurcare </title>
+    <title>Credits</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="../../static/main/images/favicon.png">
     <!-- Pignose Calender -->
@@ -13,8 +13,8 @@
     <!-- Chartist -->
     <link rel="stylesheet" href="../../static/main/plugins/chartist/css/chartist.min.css">
     <link rel="stylesheet" href="../../static/main/plugins/chartist-plugin-tooltips/css/chartist-plugin-tooltip.css">
-    <!-- Custom Stylesheet -->
     <link href="../../static/main/plugins/tables/css/datatable/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <!-- Custom Stylesheet -->
     <link href="../../static/main/plugins/jquery-steps/css/jquery.steps.css" rel="stylesheet">
     <link href="../../static/main/css/style.css" rel="stylesheet">
 
@@ -48,10 +48,7 @@
         <div class="nav-header">
             <div class="brand-logo">
                 <a href="{% url 'admin_dashboard' %}">
-                    <!-- <span class="logo-compact"><img src="../../static/main/images/logo-credits.png" alt="Logo" style="display: block; width: 180px;"></span> -->
-                    <span class="brand-title">
-                        AYURCARE
-                    </span>
+                    AYURCARE
                 </a>
             </div>
         </div>
@@ -160,15 +157,14 @@
                             <li><a href="{% url 'admin_view_medicine' %}">View</a></li>
                         </ul>
                     </li>
-                    <li class="mega-menu mega-menu-sm">
+                    <!-- <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Review</span>
+                            <i class="icon-envelope menu-icon"></i><span class="nav-text">Support</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="{% url 'admin_view_review' %}">View</a></li>
-                            
+                            <li><a href="./contact.html">Contact</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                     <!-- <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-user menu-icon"></i> <span class="nav-text">Profile</span>
@@ -189,55 +185,18 @@
         ***********************************-->
         <div class="content-body">
 
-            <div class="container-fluid mt-3">
-                <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-1">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Doctors</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">10</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-money"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-2">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Appointments</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">4500</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-shopping-cart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-3">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Packages</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">15</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-heart"></i></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="card gradient-4">
-                            <div class="card-body">
-                                <h3 class="card-title text-white">Total Patients</h3>
-                                <div class="d-inline-block">
-                                    <h2 class="text-white">5000</h2>
-                                </div>
-                                <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
-                            </div>
-                        </div>
-                    </div>
+            <div class="row page-titles mx-0">
+                <div class="col p-md-0">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Lender</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Approved</a></li>
+                    </ol>
                 </div>
+            </div>
+            <!-- row -->
 
-                <!-- <div class="row">
+            <div class="container-fluid">
+                <div class="row">
                     <div class="col-lg-12">
                         <div class="card">
                             <div class="card-body">
@@ -246,47 +205,29 @@
                                         <table class="table table-xs mb-0">
                                             <thead>
                                                 <tr>
-                                                    <th>Lender</th>
-                                                    <th>Shop</th>
-                                                    <th>User</th>
-                                                    <th>Amount</th>
-                                                    <th>Status</th>
-                                                    <th>Due Date</th>
+                                                    <th>Patient</th>
+                                                    <th>Feedback</th>
+                                                    <th>Rating</th>
+                                                    <th>Date</th>
+                                                    <th>Photo</th>
+                                                    
+                                                    
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                                {% for i in data %}
                                                 <tr>
-                                                    <td><img src="./images/avatar/fidelity.png" class=" rounded-circle mr-3" alt="">Fidelity Finance</td>
-                                                    <td>Planet Cafe</td>
-                                                    <td>Aun Thelath</td>
-                                                    <td>₹ 1500</td>
-                                                    <td><i class="fa fa-circle-o text-warning  mr-2"></i> Pending</td>
-                                                    <td>2022/10/13</td>
+                                                    <td>{{i.patient}}</td>
+                                                    <td>{{i.feedback}}</td>
+                                                    <td>{{i.rating}}</td>
+                                                    <td>{{i.date}}</td>
+                                                    <td><img src="/media/{{i.review_photo}}" style="height: 100px; width:100px;"></td>
+                                                    
+                                                   
+                                                   
                                                 </tr>
-                                                <tr>
-                                                    <td><img src="./images/avatar/allianz.png" class=" rounded-circle mr-3" alt="">Allianz</td>
-                                                    <td>Planet Cafe</td>
-                                                    <td>Abdul Basith</td>
-                                                    <td>₹ 800</td>
-                                                    <td><i class="fa fa-circle-o text-warning  mr-2"></i> Pending</td>
-                                                    <td>2022/10/13</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><img src="./images/avatar/fidelity.png" class=" rounded-circle mr-3" alt="">fidelity Finance</td>
-                                                    <td>We4You</td>
-                                                    <td>Prakan Prakash</td>
-                                                    <td>₹ 350</td>
-                                                    <td><i class="fa fa-circle-o text-warning  mr-2"></i> Pending</td>
-                                                    <td>2022/10/13</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><img src="./images/avatar/allianz.png" class=" rounded-circle mr-3" alt="">Allianz</td>
-                                                    <td>Planet Cafe</td>
-                                                    <td>Akhil Vijayan</td>
-                                                    <td>₹ 600</td>
-                                                    <td><i class="fa fa-circle-o text-warning  mr-2"></i> Pending</td>
-                                                    <td>2022/10/13</td>
-                                                </tr>
+                                                {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -294,7 +235,8 @@
                             </div>
                         </div>                        
                     </div>
-                </div> -->
+                </div>
+            </div>
             </div>
             <!-- #/ container -->
         </div>
@@ -356,7 +298,7 @@
 
 
 
-    <script src="../../static/main/js/dashboard/dashboard-1.js"></script>
+    <script src="../../static/main/s/dashboard/dashboard-1.js"></script>
 
 </body>
 

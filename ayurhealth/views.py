@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine
+from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review
 from ayurveda import models
 
 
@@ -314,4 +314,12 @@ def medicineformupdate(request,id):
         add.medicine_price=request.POST["medicine_price"]
         add.save()
         return redirect("admin_view_medicine")
-    
+
+
+
+#  ----------------------------------------- admin view Review -----------------------------------------------
+
+def admin_view_review(request):
+    data=Review.objects.all()
+    print(data)
+    return render(request,"managers/admin_view_review.html",{'data':data})

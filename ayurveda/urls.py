@@ -20,9 +20,11 @@ urlpatterns = [
    path('get_medicine', views.Get_MedicineAPIView.as_view(), name='get_Medicine'),
    path('single_medicine/<int:id>', views.SingleMedicineAPIView.as_view(), name='single_medicine'),
    path('patientsearch_doctor', views.PatientSearchDoctorAPIView.as_view(), name='patientsearch_doctor'),
+   path('patientadd_review', views.PatientReviewAPIView.as_view(), name='patientadd_review'),
+   path('single_review/<int:id>', views.SingleReviewAPIView.as_view(), name='single_review'),
 
    # get image
-    path('package_image/<int:pk>', views.Get_ImageAPIView.as_view(), name='package_image'),
+   #  path('package_image/<int:pk>', views.Get_ImageAPIView.as_view(), name='package_image'),
 
 
    # doctor
