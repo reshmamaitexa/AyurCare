@@ -43,6 +43,11 @@ urlpatterns = [
 
    path('admin_view_review', views.admin_view_review, name='admin_view_review'),
 
+   path('admin_view_complaints', views.admin_view_complaints, name='admin_view_complaints'),
+   path('admin_single_complaints/<int:id>', views.admin_single_complaints, name='admin_single_complaints'),
+   path('admin_add_complaint_replay', views.admin_add_complaint_replay, name='admin_add_complaint_replay'),
+
+
 
 
 ]

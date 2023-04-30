@@ -157,6 +157,15 @@
                             <li><a href="{% url 'admin_view_medicine' %}">View</a></li>
                         </ul>
                     </li>
+                    <li class="mega-menu mega-menu-sm">
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Review</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{% url 'admin_view_review' %}">View</a></li>
+                            
+                        </ul>
+                    </li>
                     <!-- <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-envelope menu-icon"></i><span class="nav-text">Support</span>
@@ -209,7 +218,7 @@
                                                     <th>Feedback</th>
                                                     <th>Rating</th>
                                                     <th>Date</th>
-                                                    <th>Photo</th>
+                                                    
                                                     
                                                     
                                                     
@@ -222,7 +231,7 @@
                                                     <td>{{i.feedback}}</td>
                                                     <td>{{i.rating}}</td>
                                                     <td>{{i.date}}</td>
-                                                    <td><img src="/media/{{i.review_photo}}" style="height: 100px; width:100px;"></td>
+                                                    
                                                     
                                                    
                                                    

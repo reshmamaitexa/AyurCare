@@ -206,29 +206,30 @@
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Add Remedy</h4>
+                        <h4 class="card-title">Complaint Replay</h4>
                         <div class="basic-form">
-                            <form method="post" action="{% url 'admin_add_allremedy' %}" enctype="multipart/form-data">
+                            <form method="post" action="{% url 'admin_add_complaint_replay' %}" >
                                 {% csrf_token %}
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label>Disease</label>
-                                        <input type="text" class="form-control" name="disease" >
+                                        <label>Patient</label>
+                                        <input type="text" class="form-control" name="patient" value="{{Data.patient}}" >
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Symptoms</label>
-                                        <input type="text" class="form-control" name="symptoms">
+                                        <label>Complaint</label>
+                                        <input type="text" class="form-control" name="complaint" value="{{Data.complaint}}" >
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Remedy</label>
-                                        <input type="text" class="form-control" name="remedy">
+                                        <label>Date</label>
+                                        <input type="text" class="form-control" name="date" >
                                     </div>
                                     <div class="form-group col-md-6">
-                                        <label>Remedy Photo</label>
-                                        <input type="file" class="form-control" name="remedy_photo">
+                                        <label>Replay</label>
+                                        <input type="text" class="form-control" name="replay" >
                                     </div>
+                                    
                                    
-                                    <button type="submit" class="btn mb-1 btn-rounded btn-primary">ADD</button>
+                                    <button type="submit" class="btn mb-1 btn-rounded btn-primary">Replay</button>
                                 </div>
                             </form>
                         </div>

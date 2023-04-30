@@ -99,8 +99,27 @@ class Review(models.Model):
     feedback = models.CharField(max_length=500)
     rating = models.CharField(max_length=50)
     date = models.DateField()
-    review_photo = models.ImageField(upload_to='images')
     review_status = models.CharField(max_length=10)
 
     def __str__(self):
         return self.feedback
+
+
+class Complaints(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    complaint = models.CharField(max_length=500)
+    date = models.DateField()
+    complaint_status = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.complaint
+
+class Complaints_Replay(models.Model):
+    patient = models.CharField(max_length=50)
+    complaint = models.CharField(max_length=500)
+    date = models.DateField()
+    replay= models.CharField(max_length=500)
+    complaint_status = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.replay

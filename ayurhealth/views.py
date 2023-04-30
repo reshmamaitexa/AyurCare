@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review
+from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay
 from ayurveda import models
 
 
@@ -323,3 +323,32 @@ def admin_view_review(request):
     data=Review.objects.all()
     print(data)
     return render(request,"managers/admin_view_review.html",{'data':data})
+
+
+
+#  ----------------------------------------- admin view complaints/ single complaints/ complaints replay -----------------------------------------------
+
+def admin_view_complaints(request):
+    data=Complaints.objects.all()
+    print(data)
+    return render(request,"managers/admin_view_complaints.html",{'data':data})
+
+
+def admin_single_complaints(request,id):
+    Data = Complaints.objects.get(id=id)
+    return render(request,'managers/admin_replay_complaint.html',{'Data':Data})
+
+
+def admin_add_complaint_replay(request):
+    if request.method == 'POST':
+        patient = request.POST.get('patient')
+        complaint = request.POST.get('complaint')
+        date = request.POST.get('date')
+        replay = request.POST.get('replay')
+        complaint_status = '0'
+        ComplaintDetails = models.Complaints_Replay(patient=patient, complaint=complaint,date=date, replay=replay,complaint_status=complaint_status)
+        ComplaintDetails.save()
+            
+        return redirect('admin_view_complaints')
+    else:
+        return render(request, 'managers/admin_replay_complaint.html')
