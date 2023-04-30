@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints
-from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay
+from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer
 
 
 # Create your views here.
@@ -420,7 +420,7 @@ class Get_ReviewAPIView(GenericAPIView):
             return Response({'data':'No data available', 'success':False}, status=status.HTTP_400_BAD_REQUEST)
 
 
-# ----------------------------------------- Patient post complaints -----------------------------------------------------
+# ----------------------------------------- Patient post complaints and view complaints replay-----------------------------------------------------
 
 class PatientComplaintsAPIView(GenericAPIView):
     serializer_class = ComplaintsSerializer
@@ -439,6 +439,15 @@ class PatientComplaintsAPIView(GenericAPIView):
             return Response({'data':serializer.data, 'message':'Complaints Added successfully', 'success':True}, status = status.HTTP_201_CREATED)
         return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class ComplaintReplayPIView(GenericAPIView):
+    def get(self, request, id):
+        queryset = Patient.objects.all().filter(pk=id).values()
+        for i in queryset:
+            patient_id=i['patientname']
+        data=Complaints_Replay.objects.get(patient=patient_id)
+        serializer =ComplaintReplaySerializer(data)
+        return Response({'data': serializer.data, 'message':'complaint replay data', 'success':True}, status=status.HTTP_200_OK)
 
 # ----------------------------------------- Get Image Data -----------------------------------------------------
 
