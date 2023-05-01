@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay
+from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay
 from ayurveda import models
 
 
@@ -329,26 +329,37 @@ def admin_view_review(request):
 #  ----------------------------------------- admin view complaints/ single complaints/ complaints replay -----------------------------------------------
 
 def admin_view_complaints(request):
-    data=Complaints.objects.all()
+    data=ComplaintsAndReplay.objects.all()
     print(data)
     return render(request,"managers/admin_view_complaints.html",{'data':data})
 
 
 def admin_single_complaints(request,id):
-    Data = Complaints.objects.get(id=id)
+    Data = ComplaintsAndReplay.objects.get(id=id)
     return render(request,'managers/admin_replay_complaint.html',{'Data':Data})
 
 
-def admin_add_complaint_replay(request):
-    if request.method == 'POST':
-        patient = request.POST.get('patient')
-        complaint = request.POST.get('complaint')
-        date = request.POST.get('date')
-        replay = request.POST.get('replay')
-        complaint_status = '0'
-        ComplaintDetails = models.Complaints_Replay(patient=patient, complaint=complaint,date=date, replay=replay,complaint_status=complaint_status)
-        ComplaintDetails.save()
-            
-        return redirect('admin_view_complaints')
-    else:
-        return render(request, 'managers/admin_replay_complaint.html')
+def admin_add_replay(request,id):
+    if request.method=="POST":
+        add=ComplaintsAndReplay.objects.get(id=id)
+        # add.patient=request.POST["patient"]
+        add.complaint=request.POST["complaint"]
+        add.date=request.POST["date"]
+        add.replay=request.POST["replay"]
+        add.complaint_status="1"
+        add.save()
+        return redirect("admin_view_complaints")
+
+# def admin_add_complaint_replay(request):
+#     if request.method == 'POST':
+#         patient = request.POST.get('patient')
+#         complaint = request.POST.get('complaint')
+#         date = request.POST.get('date')
+#         replay = request.POST.get('replay')
+#         complaint_status = '0'
+#         ComplaintDetails = models.Complaints_Replay(patient=patient, complaint=complaint,date=date, replay=replay,complaint_status=complaint_status)
+#         ComplaintDetails.save()
+           
+#         return redirect('admin_view_complaints')
+#     else:
+#         return render(request, 'managers/admin_replay_complaint.html')

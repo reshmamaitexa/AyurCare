@@ -166,14 +166,15 @@
                             
                         </ul>
                     </li>
-                    <!-- <li>
+                    <li class="mega-menu mega-menu-sm">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-envelope menu-icon"></i><span class="nav-text">Support</span>
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Complaints</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="./contact.html">Contact</a></li>
+                            <li><a href="{% url 'admin_view_complaints' %}">View & Replay</a></li>
+                            
                         </ul>
-                    </li> -->
+                    </li>
                     <!-- <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-user menu-icon"></i> <span class="nav-text">Profile</span>
@@ -208,13 +209,13 @@
                     <div class="card-body">
                         <h4 class="card-title">Complaint Replay</h4>
                         <div class="basic-form">
-                            <form method="post" action="{% url 'admin_add_complaint_replay' %}" >
+                            <form method="post" action="{% url 'admin_add_replay' Data.id %}" >
                                 {% csrf_token %}
                                 <div class="form-row">
-                                    <div class="form-group col-md-6">
+                                    <!-- <div class="form-group col-md-6">
                                         <label>Patient</label>
                                         <input type="text" class="form-control" name="patient" value="{{Data.patient}}" >
-                                    </div>
+                                    </div> -->
                                     <div class="form-group col-md-6">
                                         <label>Complaint</label>
                                         <input type="text" class="form-control" name="complaint" value="{{Data.complaint}}" >
@@ -225,7 +226,7 @@
                                     </div>
                                     <div class="form-group col-md-6">
                                         <label>Replay</label>
-                                        <input type="text" class="form-control" name="replay" >
+                                        <input type="text" class="form-control" name="replay" value="{{Data.replay}}" >
                                     </div>
                                     
                                    

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Log, Patient, Doctor, Doctor_Booking,Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay
+from .models import Log, Patient, Doctor, Doctor_Booking,Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay
 
 # Register your models here.
 
@@ -13,3 +13,4 @@ admin.site.register(Medicine)
 admin.site.register(Review)
 admin.site.register(Complaints)
 admin.site.register(Complaints_Replay)
+admin.site.register(ComplaintsAndReplay)

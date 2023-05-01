@@ -23,8 +23,11 @@ urlpatterns = [
    path('patientadd_review', views.PatientReviewAPIView.as_view(), name='patientadd_review'),
    path('patient_all_review', views.Get_ReviewAPIView.as_view(), name='patient_all_review'),
    path('single_review/<int:id>', views.SingleReviewAPIView.as_view(), name='single_review'),
-   path('patientadd_complaints', views.PatientComplaintsAPIView.as_view(), name='patientadd_complaints'),
-   path('complaint_replay/<int:id>', views.ComplaintReplayPIView.as_view(), name='complaint_replay'),
+   # path('patientadd_complaints', views.PatientComplaintsAPIView.as_view(), name='patientadd_complaints'),
+   # path('complaint_replay/<int:id>', views.ComplaintReplayPIView.as_view(), name='complaint_replay'),
+   path('patient_complaints', views.PatientComplaintsAndReplayAPIView.as_view(), name='patient_complaints'),
+   path('complaintsingle_view/<int:id>', views.ComplaintAndReplayPIView.as_view(), name='complaintsingle_view'),
+
 
 
    # get image

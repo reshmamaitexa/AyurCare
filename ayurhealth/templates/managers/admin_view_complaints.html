@@ -166,14 +166,15 @@
                             
                         </ul>
                     </li>
-                    <!-- <li>
+                    <li class="mega-menu mega-menu-sm">
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-envelope menu-icon"></i><span class="nav-text">Support</span>
+                            <i class="icon-globe-alt menu-icon"></i><span class="nav-text">Complaints</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="./contact.html">Contact</a></li>
+                            <li><a href="{% url 'admin_view_complaints' %}">View & Replay</a></li>
+                            
                         </ul>
-                    </li> -->
+                    </li>
                     <!-- <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
                             <i class="icon-user menu-icon"></i> <span class="nav-text">Profile</span>
@@ -217,6 +218,7 @@
                                                     <th>Patient</th>
                                                     <th>Feedback</th>
                                                     <th>Date</th>
+                                                    <th>Replay</th>
                                                     <th>Action</th>
                                                     
                                                     
@@ -230,6 +232,7 @@
                                                     <td>{{i.patient}}</td>
                                                     <td>{{i.complaint}}</td>
                                                     <td>{{i.date}}</td>
+                                                    <td>{{i.replay}}</td>
                                                     <td>
                                                         <button type="button" class="btn mb-1 btn-rounded btn-danger"><a href="{% url 'admin_single_complaints' i.id   %}">Replay</a></button>
                                                     </td>

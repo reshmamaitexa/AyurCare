@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay
-from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay
+from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer
 
 
 # Create your views here.
@@ -422,8 +422,27 @@ class Get_ReviewAPIView(GenericAPIView):
 
 # ----------------------------------------- Patient post complaints and view complaints replay-----------------------------------------------------
 
-class PatientComplaintsAPIView(GenericAPIView):
-    serializer_class = ComplaintsSerializer
+# class PatientComplaintsAPIView(GenericAPIView):
+#     serializer_class = ComplaintReplaySerializer
+
+#     def post(self, request):
+#         patient = request.data.get('patient')
+#         complaint = request.data.get('complaint')
+#         date = request.data.get('date')
+#         complaint_status="0"
+
+
+#         serializer = self.serializer_class(data= {'patient':patient, 'complaint':complaint,'date':date,'complaint_status':complaint_status})
+#         print(serializer)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({'data':serializer.data, 'message':'Complaints Added successfully', 'success':True}, status = status.HTTP_201_CREATED)
+#         return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class PatientComplaintsAndReplayAPIView(GenericAPIView):
+    serializer_class = ComplaintsAndReplaySerializer
 
     def post(self, request):
         patient = request.data.get('patient')
@@ -440,14 +459,27 @@ class PatientComplaintsAPIView(GenericAPIView):
         return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class ComplaintReplayPIView(GenericAPIView):
+
+class ComplaintAndReplayPIView(GenericAPIView):
     def get(self, request, id):
         queryset = Patient.objects.all().filter(pk=id).values()
+        print(queryset)
         for i in queryset:
-            patient_id=i['patientname']
-        data=Complaints_Replay.objects.get(patient=patient_id)
-        serializer =ComplaintReplaySerializer(data)
-        return Response({'data': serializer.data, 'message':'complaint replay data', 'success':True}, status=status.HTTP_200_OK)
+            patient=i['id']
+            print('///////////',patient)
+        data=ComplaintsAndReplay.objects.get(patient=patient)
+        serializer =ComplaintsAndReplaySerializer(data)
+        return Response({'data': serializer.data, 'message':'complaint  data', 'success':True}, status=status.HTTP_200_OK)
+
+
+# class ComplaintReplayPIView(GenericAPIView):
+#     def get(self, request, id):
+#         queryset = Patient.objects.all().filter(pk=id).values()
+#         for i in queryset:
+#             patient_id=i['patientname']
+#         data=Complaints_Replay.objects.get(patient=patient_id)
+#         serializer =ComplaintReplaySerializer(data)
+#         return Response({'data': serializer.data, 'message':'complaint replay data', 'success':True}, status=status.HTTP_200_OK)
 
 # ----------------------------------------- Get Image Data -----------------------------------------------------
 

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay
 
 class LoginUsersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -72,4 +72,12 @@ class ComplaintReplaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Complaints_Replay
         fields = '__all__' 
+
+
+class ComplaintsAndReplaySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ComplaintsAndReplay
+        fields = '__all__' 
+    def create(self, validated_data):
+        return ComplaintsAndReplay.objects.create(**validated_data)
     

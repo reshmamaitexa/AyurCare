@@ -118,8 +118,19 @@ class Complaints_Replay(models.Model):
     patient = models.CharField(max_length=50)
     complaint = models.CharField(max_length=500)
     date = models.DateField()
-    replay= models.CharField(max_length=500)
+    replay= models.CharField(max_length=500,default='No Replay')
     complaint_status = models.CharField(max_length=10)
 
     def __str__(self):
         return self.replay
+
+
+class ComplaintsAndReplay(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    complaint = models.CharField(max_length=500)
+    date = models.DateField()
+    replay= models.CharField(max_length=500,default='No Replay')
+    complaint_status = models.CharField(max_length=10)
+
+    def __str__(self):
+        return self.complaint
