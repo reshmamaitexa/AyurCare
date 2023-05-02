@@ -134,3 +134,15 @@ class ComplaintsAndReplay(models.Model):
 
     def __str__(self):
         return self.complaint
+
+
+class Token_Booking(models.Model):
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    appointment_date = models.CharField(max_length=40)
+    appointment_time = models.CharField(max_length=40)
+    number = models.IntegerField(default=0)
+    bookingstatus = models.CharField(max_length=10)
+
+    # def __str__(self):
+    #     return self.doctor

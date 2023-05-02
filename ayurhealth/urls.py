@@ -48,6 +48,8 @@ urlpatterns = [
    # path('admin_add_complaint_replay', views.admin_add_complaint_replay, name='admin_add_complaint_replay'),
    path('<int:id>/admin_add_replay/', views.admin_add_replay, name='admin_add_replay'),
 
+   path('admin_view_bookings', views.admin_view_bookings, name='admin_view_bookings'),
+
 
 
 

@@ -28,6 +28,12 @@ urlpatterns = [
    path('patient_complaints', views.PatientComplaintsAndReplayAPIView.as_view(), name='patient_complaints'),
    path('complaintsingle_view/<int:id>', views.ComplaintAndReplayPIView.as_view(), name='complaintsingle_view'),
 
+   path('token_booking', views.PatientBookDoctorTokenAPIView.as_view(), name='token_booking'),
+
+   path('doctor_token_booking/<int:id>', views.DoctorTokenAPIView.as_view(), name='docor_token_booking'),
+
+   path('patient_token_booking/<int:id>', views.PatientTokenAPIView.as_view(), name='patient_token_booking'),
+
 
 
    # get image

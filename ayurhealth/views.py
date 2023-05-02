@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay
+from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking
 from ayurveda import models
 
 
@@ -363,3 +363,10 @@ def admin_add_replay(request,id):
 #         return redirect('admin_view_complaints')
 #     else:
 #         return render(request, 'managers/admin_replay_complaint.html')
+
+
+
+def admin_view_bookings(request):
+    data=Token_Booking.objects.all()
+    print(data)
+    return render(request,"managers/admin_view_doctor_booking.html",{'data':data})

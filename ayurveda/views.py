@@ -2,8 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay
-from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking
+from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer
+from django.db.models import Q
 
 
 # Create your views here.
@@ -460,17 +461,28 @@ class PatientComplaintsAndReplayAPIView(GenericAPIView):
 
 
 
+# class ComplaintAndReplayPIView(GenericAPIView):
+#     def get(self, request, id):
+#         queryset = Patient.objects.all().filter(pk=id).values()
+#         print(queryset)
+#         for i in queryset:
+#             patient=i['id']
+#             print('///////////',patient)
+#         data=ComplaintsAndReplay.objects.get(patient=patient)
+#         serializer =ComplaintsAndReplaySerializer(data)
+#         return Response({'data': serializer.data, 'message':'complaint  data', 'success':True}, status=status.HTTP_200_OK)
+
 class ComplaintAndReplayPIView(GenericAPIView):
     def get(self, request, id):
         queryset = Patient.objects.all().filter(pk=id).values()
         print(queryset)
         for i in queryset:
-            patient=i['id']
+            patient = i['id']
             print('///////////',patient)
-        data=ComplaintsAndReplay.objects.get(patient=patient)
-        serializer =ComplaintsAndReplaySerializer(data)
+        instance = ComplaintsAndReplay.objects.get(patient=patient)
+        print("======",instance)
+        serializer = ComplaintsAndReplaySerializer(instance)
         return Response({'data': serializer.data, 'message':'complaint  data', 'success':True}, status=status.HTTP_200_OK)
-
 
 # class ComplaintReplayPIView(GenericAPIView):
 #     def get(self, request, id):
@@ -492,5 +504,66 @@ class ComplaintAndReplayPIView(GenericAPIView):
 #         #     return Response({'data':'No data available', 'success':False}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# ----------------------------------------- Patient Book Doctor/Doctor view Booking Data/Patient View Booking Data -----------------------------------------------------
 
 
+class PatientBookDoctorTokenAPIView(GenericAPIView):
+    serializer_class = DoctorTokenBookingSerializer
+
+    def post(self, request):
+        doctor = request.data.get('doctor')
+        patient = request.data.get('patient')
+        appointment_date = request.data.get('appointment_date')
+        appointment_time = request.data.get('appointment_time')
+        bookingstatus = "0"
+
+        last_token = Token_Booking.objects.all().filter(Q(doctor=doctor) & Q(appointment_date=appointment_date)).values()
+        print(last_token)
+        if last_token:
+            for i in last_token:
+                num=i['number']
+                number = num + 1
+        else:
+            number = 1
+        serializer = self.serializer_class(data= {'doctor':doctor, 'patient':patient,'appointment_date':appointment_date,'appointment_time':appointment_time,'bookingstatus':bookingstatus,'number':number})
+        
+        # last_token = Token_Booking.objects.order_by('-created_at').first()
+        # if last_token:
+        #     number = last_token.number + 1
+        # else:
+        #     number = 1
+        # token = self.serializer_class(data={'number':number})
+        # serializer = DoctorTokenBookingSerializer(token)
+
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'message':'Doctor Booked successfully', 'success':True}, status = status.HTTP_201_CREATED)
+        return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class DoctorTokenAPIView(GenericAPIView):
+    def get(self, request, id):
+        queryset = Doctor.objects.all().filter(pk=id).values()
+        print(queryset)
+        for i in queryset:
+            doctor = i['id']
+            print('///////////',doctor)
+        instance = Token_Booking.objects.all().filter(doctor=doctor).values()
+        print("======",instance)
+        # serializer = DoctorTokenBookingSerializer(instance)
+        return Response({'data': instance, 'message':'Doctor Booking  data', 'success':True}, status=status.HTTP_200_OK)
+
+
+class PatientTokenAPIView(GenericAPIView):
+    def get(self, request, id):
+        queryset = Patient.objects.all().filter(pk=id).values()
+        print(queryset)
+        for i in queryset:
+            patient = i['id']
+            print('///////////',patient)
+        instance = Token_Booking.objects.all().filter(patient=patient).values()
+        print("======",instance)
+        # serializer = DoctorTokenBookingSerializer(instance)
+        return Response({'data': instance, 'message':'Patient Booking  data', 'success':True}, status=status.HTTP_200_OK)
