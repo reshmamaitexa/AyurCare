@@ -33,6 +33,19 @@ urlpatterns = [
    path('doctor_token_booking/<int:id>', views.DoctorTokenAPIView.as_view(), name='docor_token_booking'),
 
    path('patient_token_booking/<int:id>', views.PatientTokenAPIView.as_view(), name='patient_token_booking'),
+   
+
+   path('token_booking', views.PatientBookDoctorTokenAPIView.as_view(), name='token_booking'),
+   
+
+   path('package_booking', views.PackageBookingAPIView.as_view(), name='package_booking'),
+
+   path('package_single_view/<int:id>', views.PackageSingleBookingAPIView.as_view(), name='package_single_view'),
+
+   path('package_booking_all_price/<int:id>', views.BookingAllPriceAPIView.as_view(), name='package_booking_all_price'),
+
+   path('package_booking_delete/<int:id>', views.Delete_PackageBookingAPIView.as_view(), name='package_booking_delete'),
+
 
 
 

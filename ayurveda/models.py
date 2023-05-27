@@ -146,3 +146,45 @@ class Token_Booking(models.Model):
 
     # def __str__(self):
     #     return self.doctor
+
+
+
+class Package_Booking(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    packages=models.ForeignKey(Packages,on_delete=models.CASCADE)
+    package_name = models.CharField(max_length=500)
+    package_duration = models.CharField(max_length=500)
+    package_price= models.CharField(max_length=500)
+    booking_status = models.CharField(max_length=10)
+    package_photo = models.ImageField(upload_to='images')
+
+
+
+class Package_payment(models.Model):
+    patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
+    patient_name=models.CharField(max_length=50,blank=True, null=True)
+    package_booking=models.ForeignKey(Package_Booking,on_delete=models.CASCADE)
+    package_name=models.CharField(max_length=50,blank=True, null=True)
+    package_price= models.IntegerField()
+    payment_status = models.CharField(max_length=10,blank=True, null=True)
+
+
+
+class Medicine_Carts(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    medicine=models.ForeignKey(Medicine,on_delete=models.CASCADE)
+    medicine_name = models.CharField(max_length=500)
+    medicine_qnty = models.CharField(max_length=500)
+    medicine_price= models.CharField(max_length=500)
+    cart_status = models.CharField(max_length=10)
+    medicine_photo = models.ImageField(upload_to='images')
+
+
+class Medicine_orders(models.Model):
+    user=models.ForeignKey(Patient,on_delete=models.CASCADE)
+    medicine=models.ForeignKey(Medicine,on_delete=models.CASCADE)
+    medicine_name = models.CharField(max_length=500, blank=True, null=True)
+    medicine_qnty = models.CharField(max_length=500,blank=True, null=True)
+    medicine_price= models.IntegerField()
+    medicine_photo = models.ImageField(upload_to='images', blank=True, null=True)
+    order_status = models.CharField(max_length=10,blank=True, null=True)

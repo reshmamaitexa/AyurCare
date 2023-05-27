@@ -1,9 +1,11 @@
 from django.shortcuts import render, get_object_or_404
 from rest_framework.response import Response
+from django.conf import settings
+from django.db.models import Sum
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking
-from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Booking, Package_payment
+from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer, PackageBookingSerializer, Package_PaymentSerializer, MedicineCartSerializer, Medicine_OrderSerializer
 from django.db.models import Q
 
 
@@ -567,3 +569,166 @@ class PatientTokenAPIView(GenericAPIView):
         print("======",instance)
         # serializer = DoctorTokenBookingSerializer(instance)
         return Response({'data': instance, 'message':'Patient Booking  data', 'success':True}, status=status.HTTP_200_OK)
+
+
+
+
+class PackageBookingAPIView(GenericAPIView):
+    serializer_class = PackageBookingSerializer
+
+    def post(self, request):
+       
+
+        
+        patient = request.data.get('patient')
+        packages=request.data.get('packages')
+        booking_status="0"
+       
+       
+        data=Packages.objects.all().filter(id=packages).values()
+        for i in data:
+            print(i)
+            package_name=i['package_name']
+            package_duration=i['package_duration']
+            package_price=i['package_price']
+            price=int(package_price)
+            print(price)
+
+        p_info = Packages.objects.get(id=packages)
+        package_photo = p_info.package_photo
+        print(package_photo)
+            
+
+        serializer = self.serializer_class(data= {'patient':patient,'packages':packages,'package_name':package_name,'package_duration':package_duration,'booking_status':booking_status,'package_price':price,'package_photo':package_photo})
+        print(serializer)
+        if serializer.is_valid():
+            print("hi")
+            serializer.save()
+            return Response({'data':serializer.data,'message':'Package Booked successfully', 'success':True}, status = status.HTTP_201_CREATED)
+        return Response({'data':serializer.errors,'message':'Invalid','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class PackageSingleBookingAPIView(GenericAPIView):
+    
+    def get(self, request, id):
+        u_id=""
+        qset = Patient.objects.all().filter(pk=id).values()
+        for i in qset:
+            u_id=i['id']
+
+        data = Package_Booking.objects.filter(patient=u_id).values()
+        serialized_data = list(data)
+        print(serialized_data)
+        for obj in serialized_data:
+            obj['package_photo'] = settings.MEDIA_URL + str(obj['package_photo'])
+        return Response({'data':serialized_data, 'message':'single product data', 'success':True}, status=status.HTTP_200_OK)
+
+
+
+class BookingAllPriceAPIView(GenericAPIView):
+
+    def get(self, request,id):
+        book = Package_Booking.objects.filter(patient=id)
+        print(book)
+
+        tot = book.aggregate(total=Sum('package_price'))['total']
+        print(tot)
+        return Response({'data':{ 'total_price':tot} , 'message': 'Get Total Booking Price successfully', 'success': True}, status=status.HTTP_201_CREATED)
+       
+
+
+
+class Delete_PackageBookingAPIView(GenericAPIView):
+    def delete(self, request, id):
+        delmember = Package_Booking.objects.get(pk=id)
+        delmember.delete()
+        return Response({'message':'Booking Deleted successfully',  'success':True}, status=status.HTTP_200_OK)
+
+
+
+# class UserPackageBookAPIView(GenericAPIView):
+#     serializer_class = OrderSerializer
+
+#     def post(self, request):
+#         user = request.data.get('user')
+#         carts = cart.objects.filter(user=user, cart_status=0)
+
+#         if not carts.exists():
+#             return Response({'message': 'No items in cart to place order', 'success': False}, status=status.HTTP_400_BAD_REQUEST)
+#         order_data = []
+        
+#         for i in carts:
+#             order_data.append({
+#                 'user': user,
+#                 'product': i.product.id,
+#                 'product_name': i.p_name,
+#                 'quantity': i.quantity,
+#                 'total_price': i.total_price,
+#                 'image': i.image,
+#                 'category': i.category,
+#                 'order_status': "0",
+#             })
+#             print(order_data)
+#             i.cart_status = "1"
+#             i.save()
+
+#         serializer = self.serializer_class(data=order_data, many=True)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({'data': serializer.data, 'message': 'Order placed successfully', 'success': True}, status=status.HTTP_201_CREATED)
+#         return Response({'data': serializer.errors, 'message': 'Failed', 'success': False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+# class SingleOrderAPIView(GenericAPIView):
+#     def get(self, request, id):
+#         qset = brookuser.objects.all().filter(pk=id).values()
+#         for i in qset:
+#             u_id=i['id']
+
+#         # data=order.objects.all().filter(user=u_id).values()
+#         # print(data)
+
+#         data = order.objects.filter(user=u_id).values()
+#         serialized_data = list(data)
+#         print(serialized_data)
+#         for obj in serialized_data:
+#             obj['image'] = settings.MEDIA_URL + str(obj['image'])
+#         return Response({'data':data, 'message':'single order data', 'success':True}, status=status.HTTP_200_OK)
+
+
+
+
+
+# class UserOrderPaymentAPIView(GenericAPIView):
+#     serializer_class = PaymentSerializer
+
+#     def post(self, request):
+#         prices=""
+#         user = request.data.get('user')
+#         ords = request.data.get('orders')
+#         print(ords)
+#         date = request.data.get('date')
+#         paymentstatus="0"
+
+#         data = order.objects.all().filter(id=ords).values()
+#         print(data)
+#         for i in data:
+#             prices=i['price']
+            
+        
+
+
+#         serializer = self.serializer_class(data= {'user':user, 'orders':ords,'date':date,'amount':prices,'paymentstatus':paymentstatus})
+#         print(serializer)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response({'data':serializer.data, 'message':'Payment successfull', 'success':True}, status = status.HTTP_201_CREATED)
+#         return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
