@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Book, Package_payments, Medicine_Carts_tb, Medicine_order_tb
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Books, Package_payment_tb, Treatments
 
 class LoginUsersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -91,32 +91,26 @@ class DoctorTokenBookingSerializer(serializers.ModelSerializer):
 
 class PackageBookingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Package_Book
+        model = Package_Books
         fields = '__all__'
     def create(self,validated_data):
-        return Package_Book.objects.create(**validated_data)
+        return Package_Books.objects.create(**validated_data)
 
 
 class Package_PaymentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Package_payments
+        model = Package_payment_tb
         fields = '__all__'
     def create(self,validated_data):
-        return Package_payments.objects.create(**validated_data)
+        return Package_payment_tb.objects.create(**validated_data)
 
 
-class MedicineCartSerializer(serializers.ModelSerializer):
+
+
+class TreatmentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Medicine_Carts_tb
+        model = Treatments
         fields = '__all__'
     def create(self,validated_data):
-        return Medicine_Carts_tb.objects.create(**validated_data)
+        return Treatments.objects.create(**validated_data)
 
-
-class Medicine_OrderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Medicine_order_tb
-        fields = '__all__'
-    def create(self,validated_data):
-        return Medicine_order_tb.objects.create(**validated_data)
-    

@@ -4,8 +4,8 @@ from django.conf import settings
 from django.db.models import Sum
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Book, Package_payments
-from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer, PackageBookingSerializer, Package_PaymentSerializer, MedicineCartSerializer, Medicine_OrderSerializer
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Books, Package_payment_tb, Treatments
+from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer, PackageBookingSerializer, Package_PaymentSerializer, TreatmentSerializer
 from django.db.models import Q
 
 
@@ -618,7 +618,7 @@ class PackageSingleBookingAPIView(GenericAPIView):
         for i in qset:
             u_id=i['id']
 
-        data = Package_Book.objects.filter(patient=u_id).values()
+        data = Package_Books.objects.filter(patient=u_id).values()
         serialized_data = list(data)
         print(serialized_data)
         for obj in serialized_data:
@@ -630,7 +630,7 @@ class PackageSingleBookingAPIView(GenericAPIView):
 class BookingAllPriceAPIView(GenericAPIView):
 
     def get(self, request,id):
-        book = Package_Book.objects.filter(patient=id)
+        book = Package_Books.objects.filter(patient=id)
         print(book)
 
         tot = book.aggregate(total=Sum('package_price'))['total']
@@ -642,7 +642,7 @@ class BookingAllPriceAPIView(GenericAPIView):
 
 class Delete_PackageBookingAPIView(GenericAPIView):
     def delete(self, request, id):
-        delmember = Package_Book.objects.get(pk=id)
+        delmember = Package_Books.objects.get(pk=id)
         delmember.delete()
         return Response({'message':'Booking Deleted successfully',  'success':True}, status=status.HTTP_200_OK)
 
@@ -652,10 +652,70 @@ class BookingStatusWithOneAPIView(GenericAPIView):
 
     def get(self, request,id):
         # user = request.data.get('user')
-        carts = Package_Book.objects.filter(patient=id, booking_status=1).values()
+        carts = Package_Books.objects.filter(patient=id, booking_status=1).values()
         print(carts)
         return Response({'data':carts , 'message': 'Booking Status with One Get successfully', 'success': True}, status=status.HTTP_201_CREATED)
         # return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class UserPackagePaymentAPIView(GenericAPIView):
+    serializer_class = Package_PaymentSerializer
+
+    def post(self, request):
+        package_name=""
+        patient = request.data.get('patient')
+        Package_Booking = request.data.get('Package_Booking')
+        package_price = request.data.get('package_price')
+        payment_date = request.data.get('payment_date')
+        payment_status="0"
+
+        data = Patient.objects.filter(id=patient).values()
+        for i in data:
+            patientname=i['patientname']
+        
+        dta = Package_Books.objects.filter(id=Package_Booking).values()
+        for i in dta:
+            package_name=i['package_name']
+
+
+        serializer = self.serializer_class(data= {'patient':patient, 'patient_name':patientname,'Package_Booking':Package_Booking,'package_name':package_name,'package_price':package_price,'payment_date':payment_date,'payment_status':payment_status})
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'message':'Payment successfull', 'success':True}, status = status.HTTP_201_CREATED)
+        return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class DoctorPostTreatmentDetailsAPIView(GenericAPIView):
+    serializer_class = TreatmentSerializer
+
+    def post(self, request):
+        patient = request.data.get('patient')
+        token_booking = request.data.get('token_booking')
+        doctor = request.data.get('doctor')
+        disease = request.data.get('disease')
+        medicine = request.data.get('medicine')
+        treatment_date = request.data.get('treatment_date')
+        treatment_status="0"
+
+        data = Patient.objects.filter(id=patient).values()
+        for i in data:
+            patientname=i['patientname']
+        
+        dta = Doctor.objects.filter(id=doctor).values()
+        for i in dta:
+            doctorname=i['doctorname']
+
+
+        serializer = self.serializer_class(data= {'patient':patient, 'patientname':patientname,'token_booking':token_booking,'doctor':doctor,'doctorname':doctorname,'disease':disease,'medicine':medicine,'treatment_date':treatment_date,'treatment_status':treatment_status})
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'message':'Treatement Details Added Successfully', 'success':True}, status = status.HTTP_201_CREATED)
+        return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 # class UserPackageBookAPIView(GenericAPIView):

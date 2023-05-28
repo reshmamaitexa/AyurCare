@@ -48,6 +48,10 @@ urlpatterns = [
 
    path('package_booking_with_status_One/<int:id>', views.BookingStatusWithOneAPIView.as_view(), name='package_booking_with_status_One'),
 
+   path('package_booking_payment', views.UserPackagePaymentAPIView.as_view(), name='package_booking'),
+
+   path('doctor_add_treatment_details', views.DoctorPostTreatmentDetailsAPIView.as_view(), name='doctor_add_treatment_details'),
+
 
 
 

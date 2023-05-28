@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking , Package_Book
+from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking , Package_Books
 from ayurveda import models
 
 
@@ -377,21 +377,21 @@ def admin_view_bookings(request):
 # -------------------------------------- admin view all packages bookings --------------------------
 
 def admin_view_all_package_bookings(request):
-    queryset = Package_Book.objects.all()
+    queryset = Package_Books.objects.all()
     return render(request,'managers/admin_view_package_bookings.html',{'queryset':queryset})
 
 
 # -------------------------------------- admin view all approved patients --------------------------
 
 def admin_view_all_approved_package_bookings(request):
-    queryset = Package_Book.objects.all()
+    queryset = Package_Books.objects.all()
     return render(request,'managers/admin_approve_package_bookings.html',{'queryset':queryset})
 
 
 # -------------------------------------- admin view approve patients --------------------------
 
 def admin_approve_package_bookings(request,id):
-    user = Package_Book.objects.get(id=id)
+    user = Package_Books.objects.get(id=id)
     user.booking_status = 1
     user.save()
     return redirect('admin_view_all_approved_package_bookings')
@@ -400,7 +400,7 @@ def admin_approve_package_bookings(request,id):
 # -------------------------------------- admin view reject patients --------------------------
 
 def admin_delete_package_bookings(request,id):
-    delmember = Package_Book.objects.get(id=id)
+    delmember = Package_Books.objects.get(id=id)
     print(delmember)
     delmember.delete()
     return redirect('admin_view_all_package_bookings')
