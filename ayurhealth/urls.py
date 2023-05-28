@@ -51,6 +51,12 @@ urlpatterns = [
    path('admin_view_bookings', views.admin_view_bookings, name='admin_view_bookings'),
 
 
+   path('admin_view_all_package_bookings', views.admin_view_all_package_bookings, name='admin_view_all_package_bookings'),
+   path('admin_view_all_approved_package_bookings', views.admin_view_all_approved_package_bookings, name='admin_view_all_approved_package_bookings'),
+   path('admin_approve_package_bookings/<int:id>', views.admin_approve_package_bookings, name='admin_approve_package_bookings'),
+   path('admin_delete_package_bookings/<int:id>', views.admin_delete_package_bookings, name='admin_delete_package_bookings'),
+
+
 
 
 

@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
-from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking
+from ayurveda.models import Patient, Log, Doctor, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking , Package_Book
 from ayurveda import models
 
 
@@ -370,3 +370,37 @@ def admin_view_bookings(request):
     data=Token_Booking.objects.all()
     print(data)
     return render(request,"managers/admin_view_doctor_booking.html",{'data':data})
+
+
+
+
+# -------------------------------------- admin view all packages bookings --------------------------
+
+def admin_view_all_package_bookings(request):
+    queryset = Package_Book.objects.all()
+    return render(request,'managers/admin_view_package_bookings.html',{'queryset':queryset})
+
+
+# -------------------------------------- admin view all approved patients --------------------------
+
+def admin_view_all_approved_package_bookings(request):
+    queryset = Package_Book.objects.all()
+    return render(request,'managers/admin_approve_package_bookings.html',{'queryset':queryset})
+
+
+# -------------------------------------- admin view approve patients --------------------------
+
+def admin_approve_package_bookings(request,id):
+    user = Package_Book.objects.get(id=id)
+    user.booking_status = 1
+    user.save()
+    return redirect('admin_view_all_approved_package_bookings')
+
+
+# -------------------------------------- admin view reject patients --------------------------
+
+def admin_delete_package_bookings(request,id):
+    delmember = Package_Book.objects.get(id=id)
+    print(delmember)
+    delmember.delete()
+    return redirect('admin_view_all_package_bookings')

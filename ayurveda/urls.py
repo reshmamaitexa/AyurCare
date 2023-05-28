@@ -46,6 +46,8 @@ urlpatterns = [
 
    path('package_booking_delete/<int:id>', views.Delete_PackageBookingAPIView.as_view(), name='package_booking_delete'),
 
+   path('package_booking_with_status_One/<int:id>', views.BookingStatusWithOneAPIView.as_view(), name='package_booking_with_status_One'),
+
 
 
 

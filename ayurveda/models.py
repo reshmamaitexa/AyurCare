@@ -149,28 +149,39 @@ class Token_Booking(models.Model):
 
 
 
-class Package_Booking(models.Model):
+# class Package_Booking(models.Model):
+#     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+#     packages=models.ForeignKey(Packages,on_delete=models.CASCADE)
+#     package_name = models.CharField(max_length=500)
+#     package_duration = models.CharField(max_length=500)
+#     package_price= models.CharField(max_length=500)
+#     booking_date = models.DateField()
+#     booking_status = models.CharField(max_length=10)
+#     package_photo = models.ImageField(upload_to='images')
+
+
+class Package_Book(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     packages=models.ForeignKey(Packages,on_delete=models.CASCADE)
     package_name = models.CharField(max_length=500)
     package_duration = models.CharField(max_length=500)
     package_price= models.CharField(max_length=500)
+    booking_date = models.DateField()
     booking_status = models.CharField(max_length=10)
     package_photo = models.ImageField(upload_to='images')
 
 
-
-class Package_payment(models.Model):
+class Package_payments(models.Model):
     patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
     patient_name=models.CharField(max_length=50,blank=True, null=True)
-    package_booking=models.ForeignKey(Package_Booking,on_delete=models.CASCADE)
+    package_booking=models.ForeignKey(Package_Book,on_delete=models.CASCADE)
     package_name=models.CharField(max_length=50,blank=True, null=True)
     package_price= models.IntegerField()
     payment_status = models.CharField(max_length=10,blank=True, null=True)
 
 
 
-class Medicine_Carts(models.Model):
+class Medicine_Carts_tb(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     medicine=models.ForeignKey(Medicine,on_delete=models.CASCADE)
     medicine_name = models.CharField(max_length=500)
@@ -180,7 +191,8 @@ class Medicine_Carts(models.Model):
     medicine_photo = models.ImageField(upload_to='images')
 
 
-class Medicine_orders(models.Model):
+
+class Medicine_order_tb(models.Model):
     user=models.ForeignKey(Patient,on_delete=models.CASCADE)
     medicine=models.ForeignKey(Medicine,on_delete=models.CASCADE)
     medicine_name = models.CharField(max_length=500, blank=True, null=True)

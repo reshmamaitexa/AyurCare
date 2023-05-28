@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Booking, Package_payment, Medicine_Carts, Medicine_orders
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Book, Package_payments, Medicine_Carts_tb, Medicine_order_tb
 
 class LoginUsersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -13,7 +13,6 @@ class PatientRegisterSerializer(serializers.ModelSerializer):
         fields = '__all__'
     def create(self, validated_data):
         return Patient.objects.create(**validated_data)
-
 
 
 class doctorRegisterSerializer(serializers.ModelSerializer):
@@ -92,32 +91,32 @@ class DoctorTokenBookingSerializer(serializers.ModelSerializer):
 
 class PackageBookingSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Package_Booking
+        model = Package_Book
         fields = '__all__'
     def create(self,validated_data):
-        return Package_Booking.objects.create(**validated_data)
+        return Package_Book.objects.create(**validated_data)
 
 
 class Package_PaymentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Package_payment
+        model = Package_payments
         fields = '__all__'
     def create(self,validated_data):
-        return Package_payment.objects.create(**validated_data)
+        return Package_payments.objects.create(**validated_data)
 
 
 class MedicineCartSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Medicine_Carts
+        model = Medicine_Carts_tb
         fields = '__all__'
     def create(self,validated_data):
-        return Package_Cart.objects.create(**validated_data)
+        return Medicine_Carts_tb.objects.create(**validated_data)
 
 
 class Medicine_OrderSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Medicine_orders
+        model = Medicine_order_tb
         fields = '__all__'
     def create(self,validated_data):
-        return Package_order.objects.create(**validated_data)
+        return Medicine_order_tb.objects.create(**validated_data)
     
