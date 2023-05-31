@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db.models import Sum
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Books, Package_payment_tb, Treatments
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Books, Package_payment_tb, Treatments, Cart
 from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer, PackageBookingSerializer, Package_PaymentSerializer, TreatmentSerializer, CartSerializer
 from django.db.models import Q
 
@@ -760,7 +760,7 @@ class CartMedicineAPIView(GenericAPIView):
         
         patient = request.data.get('patient')
         medicine=request.data.get('medicine')
-        print(product)
+        print(medicine)
         medicine_qnty = request.data.get('medicine_qnty')
         quantity=int(medicine_qnty)
         cart_status="0"
