@@ -591,6 +591,8 @@ class DoctorTokenAPIView(GenericAPIView):
 
 
 
+
+
 class PatientTokenAPIView(GenericAPIView):
     def get(self, request, id):
         queryset = Patient.objects.all().filter(pk=id).values()
@@ -737,7 +739,6 @@ class DoctorPostTreatmentDetailsAPIView(GenericAPIView):
     serializer_class = TreatmentSerializer
 
     def post(self, request):
-        patient = request.data.get('patient')
         token_booking = request.data.get('token_booking')
         doctor = request.data.get('doctor')
         disease = request.data.get('disease')
@@ -745,8 +746,12 @@ class DoctorPostTreatmentDetailsAPIView(GenericAPIView):
         treatment_date = request.data.get('treatment_date')
         treatment_status="0"
 
-        data = Patient.objects.filter(id=patient).values()
+        data = Token_Booking.objects.filter(id=token_booking).values()
         for i in data:
+            patient_id=i['patient_id']
+
+        dta = Patient.objects.filter(id=patient_id).values()
+        for i in dta:
             patientname=i['patientname']
         
         dta = Doctor.objects.filter(id=doctor).values()
@@ -754,7 +759,7 @@ class DoctorPostTreatmentDetailsAPIView(GenericAPIView):
             doctorname=i['doctorname']
 
 
-        serializer = self.serializer_class(data= {'patient':patient, 'patientname':patientname,'token_booking':token_booking,'doctor':doctor,'doctorname':doctorname,'disease':disease,'medicine':medicine,'treatment_date':treatment_date,'treatment_status':treatment_status})
+        serializer = self.serializer_class(data= {'patientname':patientname,'token_booking':token_booking,'doctor':doctor,'doctorname':doctorname,'disease':disease,'medicine':medicine,'treatment_date':treatment_date,'treatment_status':treatment_status})
         print(serializer)
         if serializer.is_valid():
             serializer.save()
@@ -779,12 +784,13 @@ class GetDoctorTreatmentAPIView(GenericAPIView):
 
 class GetPatientTreatmentAPIView(GenericAPIView):
     def get(self, request, id):
-        queryset = Patient.objects.all().filter(pk=id).values()
+        patient=""
+        queryset = Token_Booking.objects.all().filter(pk=id).values()
         print(queryset)
         for i in queryset:
-            patient = i['id']
-            print('///////////',patient)
-        instance = Treatments.objects.all().filter(patient=patient).values()
+            t_id = i['id']
+            print('///////////',t_id)
+        instance = Treatments.objects.all().filter(token_booking=t_id).values()
         print("======",instance)
         # serializer = DoctorTokenBookingSerializer(instance)
         return Response({'data': instance, 'message':'Patient Get Treatment Details', 'success':True}, status=status.HTTP_200_OK)

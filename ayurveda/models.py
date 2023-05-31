@@ -174,7 +174,6 @@ class Package_payment_tb(models.Model):
 
 
 class Treatments(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     patientname=models.CharField(max_length=50,blank=True, null=True)
     token_booking=models.ForeignKey(Token_Booking,on_delete=models.CASCADE)
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
