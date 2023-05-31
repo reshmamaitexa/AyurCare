@@ -545,17 +545,50 @@ class PatientBookDoctorTokenAPIView(GenericAPIView):
 
 
 
+
 class DoctorTokenAPIView(GenericAPIView):
     def get(self, request, id):
-        queryset = Doctor.objects.all().filter(pk=id).values()
-        print(queryset)
+        queryset = Doctor.objects.filter(pk=id).values()
+        doctors = []
         for i in queryset:
             doctor = i['id']
-            print('///////////',doctor)
-        instance = Token_Booking.objects.all().filter(doctor=doctor).values()
-        print("======",instance)
-        # serializer = DoctorTokenBookingSerializer(instance)
-        return Response({'data': instance, 'message':'Doctor Booking  data', 'success':True}, status=status.HTTP_200_OK)
+            doctors.append(doctor)
+            print('///////////', doctor)
+        
+        booking_data = []
+        instances = Token_Booking.objects.filter(doctor__in=doctors).values()
+        for instance in instances:
+            book_id = instance["id"]
+            doctor = instance["doctor_id"]
+            patient = instance["patient_id"]
+            appointment_date = instance["appointment_date"]
+            appointment_time = instance["appointment_time"]
+            number = instance["number"]
+            bookingstatus = instance["bookingstatus"]
+            a= Patient.objects.all().filter(id=patient).values()
+
+            for i in a:
+                patient_name=i["patientname"]
+
+            booking_data.append({
+                "book_id": book_id,
+                "doctor": doctor,
+                "patient": patient,
+                "appointment_date": appointment_date,
+                "appointment_time": appointment_time,
+                "number": number,
+                "bookingstatus": bookingstatus,
+                "patientname": patient_name
+
+            })
+
+        return Response({
+            'data': booking_data,
+            'message': 'Doctor Booking data',
+            'success': True
+        }, status=status.HTTP_200_OK)
+
+
 
 
 class PatientTokenAPIView(GenericAPIView):
@@ -569,6 +602,18 @@ class PatientTokenAPIView(GenericAPIView):
         print("======",instance)
         # serializer = DoctorTokenBookingSerializer(instance)
         return Response({'data': instance, 'message':'Patient Booking  data', 'success':True}, status=status.HTTP_200_OK)
+
+
+class Get_AllBookingAPIView(GenericAPIView):
+    serializer_class = DoctorTokenBookingSerializer
+    def get(self, request):
+        queryset = Token_Booking.objects.all()
+        if (queryset.count()>0):
+            serializer = DoctorTokenBookingSerializer(queryset, many=True)
+            return Response({'data': serializer.data, 'message':'Booking all data', 'success':True}, status=status.HTTP_200_OK)
+        else:
+            return Response({'data':'No data available', 'success':False}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 

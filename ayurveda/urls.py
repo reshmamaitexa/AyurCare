@@ -33,6 +33,8 @@ urlpatterns = [
    path('doctor_token_booking/<int:id>', views.DoctorTokenAPIView.as_view(), name='docor_token_booking'),
 
    path('patient_token_booking/<int:id>', views.PatientTokenAPIView.as_view(), name='patient_token_booking'),
+
+   path('patient_token_booking_all_data', views.Get_AllBookingAPIView.as_view(), name='patient_token_booking_all_data'),
    
 
    path('token_booking', views.PatientBookDoctorTokenAPIView.as_view(), name='token_booking'),
