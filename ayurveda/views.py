@@ -5,7 +5,7 @@ from django.db.models import Sum
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
 from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Books, Package_payment_tb, Treatments
-from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer, PackageBookingSerializer, Package_PaymentSerializer, TreatmentSerializer
+from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer, PackageBookingSerializer, Package_PaymentSerializer, TreatmentSerializer, CartSerializer
 from django.db.models import Q
 
 
@@ -716,6 +716,85 @@ class DoctorPostTreatmentDetailsAPIView(GenericAPIView):
             return Response({'data':serializer.data, 'message':'Treatement Details Added Successfully', 'success':True}, status = status.HTTP_201_CREATED)
         return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
 
+
+
+class GetDoctorTreatmentAPIView(GenericAPIView):
+    def get(self, request, id):
+        queryset = Doctor.objects.all().filter(pk=id).values()
+        print(queryset)
+        for i in queryset:
+            doctor = i['id']
+            print('///////////',doctor)
+        instance = Treatments.objects.all().filter(doctor=doctor).values()
+        print("======",instance)
+        # serializer = DoctorTokenBookingSerializer(instance)
+        return Response({'data': instance, 'message':'Doctor Get Treatment Details', 'success':True}, status=status.HTTP_200_OK)
+
+
+
+class GetPatientTreatmentAPIView(GenericAPIView):
+    def get(self, request, id):
+        queryset = Patient.objects.all().filter(pk=id).values()
+        print(queryset)
+        for i in queryset:
+            patient = i['id']
+            print('///////////',patient)
+        instance = Treatments.objects.all().filter(patient=patient).values()
+        print("======",instance)
+        # serializer = DoctorTokenBookingSerializer(instance)
+        return Response({'data': instance, 'message':'Patient Get Treatment Details', 'success':True}, status=status.HTTP_200_OK)
+
+
+
+
+class CartMedicineAPIView(GenericAPIView):
+    serializer_class = CartSerializer
+
+    def post(self, request):
+        total_price=""
+        image=""
+        category=""
+        p_status=""
+        prices=""
+
+        
+        patient = request.data.get('patient')
+        medicine=request.data.get('medicine')
+        print(product)
+        medicine_qnty = request.data.get('medicine_qnty')
+        quantity=int(medicine_qnty)
+        cart_status="0"
+        
+        carts = Cart.objects.filter(patient=patient, medicine=medicine)
+        if carts.exists():
+            return Response({'message':'Item is already in cart','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+        else:
+            data=Medicine.objects.all().filter(id=medicine).values()
+            for i in data:
+                print(i)
+                prices=i['medicine_price']
+                p_status=i['medicine_status']
+                p_name=i['medicine_name']
+                
+                price=int(prices)
+                print(price)
+                total_price=price*quantity
+                print(total_price)
+                tp=str(total_price)
+
+            producto = Medicine.objects.get(id=medicine)
+            product_image = producto.medicine_photo
+            
+                
+
+            serializer = self.serializer_class(data= {'patient':patient,'medicine':medicine,'medicine_qnty':medicine_qnty,'medicine_price':tp,'cart_status':cart_status,'medicine_photo':product_image,'medicine_name':p_name})
+            print(serializer)
+            if serializer.is_valid():
+                print("hi")
+                serializer.save()
+                return Response({'data':serializer.data,'message':'cart added successfully', 'success':True}, status = status.HTTP_201_CREATED)
+            return Response({'data':serializer.errors,'message':'Invalid','success':False}, status=status.HTTP_400_BAD_REQUEST)
 
 
 # class UserPackageBookAPIView(GenericAPIView):

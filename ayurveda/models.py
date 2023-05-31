@@ -183,3 +183,14 @@ class Treatments(models.Model):
     medicine = models.CharField(max_length = 500)
     treatment_date = models.DateField()
     treatment_status = models.CharField(max_length=10)
+
+
+
+class Cart(models.Model):
+    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    medicine=models.ForeignKey(Medicine,on_delete=models.CASCADE)
+    medicine_name = models.CharField(max_length=500)
+    medicine_qnty = models.CharField(max_length=500)
+    medicine_price= models.CharField(max_length=500)
+    cart_status = models.CharField(max_length=10)
+    medicine_photo = models.ImageField(upload_to='images')

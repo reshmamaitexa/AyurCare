@@ -52,6 +52,11 @@ urlpatterns = [
 
    path('doctor_add_treatment_details', views.DoctorPostTreatmentDetailsAPIView.as_view(), name='doctor_add_treatment_details'),
 
+   path('doctor_view_treatment_details/<int:id>', views.GetDoctorTreatmentAPIView.as_view(), name='doctor_view_treatment_details'),
+
+   path('patient_view_treatment_details/<int:id>', views.GetPatientTreatmentAPIView.as_view(), name='patient_view_treatment_details'),
+
+   path('addtocart', views.CartMedicineAPIView.as_view(), name='addtocart'),
 
 
 

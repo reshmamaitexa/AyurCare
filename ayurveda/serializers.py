@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Books, Package_payment_tb, Treatments
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Books, Package_payment_tb, Treatments , Cart
 
 class LoginUsersSerializer(serializers.ModelSerializer):
     class Meta:
@@ -113,4 +113,13 @@ class TreatmentSerializer(serializers.ModelSerializer):
         fields = '__all__'
     def create(self,validated_data):
         return Treatments.objects.create(**validated_data)
+
+
+
+class CartSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cart
+        fields = '__all__'
+    def create(self,validated_data):
+        return Cart.objects.create(**validated_data)
 
