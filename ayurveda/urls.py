@@ -60,6 +60,8 @@ urlpatterns = [
 
    path('addtocart', views.CartMedicineAPIView.as_view(), name='addtocart'),
 
+   path('patient_single_cart/<int:id>', views.SingleCartAPIView.as_view(), name='patient_single_cart'),
+
 
 
    # get image

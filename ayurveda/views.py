@@ -848,6 +848,28 @@ class CartMedicineAPIView(GenericAPIView):
             return Response({'data':serializer.errors,'message':'Invalid','success':False}, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+class SingleCartAPIView(GenericAPIView):
+    
+    def get(self, request, id):
+    
+        u_id=""
+        qset = Patient.objects.all().filter(pk=id).values()
+        for i in qset:
+            u_id=i['id']
+
+        data = Cart.objects.filter(patient=u_id).values()
+        serialized_data = list(data)
+        print(serialized_data)
+        for obj in serialized_data:
+            obj['image'] = settings.MEDIA_URL + str(obj['medicine_photo'])
+        return Response({'data':serialized_data, 'message':'single cart data', 'success':True}, status=status.HTTP_200_OK)
+
+
+
+
+
+
 # class UserPackageBookAPIView(GenericAPIView):
 #     serializer_class = OrderSerializer
 
