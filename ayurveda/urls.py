@@ -62,6 +62,12 @@ urlpatterns = [
 
    path('patient_single_cart/<int:id>', views.SingleCartAPIView.as_view(), name='patient_single_cart'),
 
+   path('cart_increment/<int:id>', views.CartIncrementQuantityAPIView.as_view(), name='cart_increment'),
+
+   path('cart_decrement/<int:id>', views.CartDecrementQuantityAPIView.as_view(), name='cart_decrement'),
+
+   path('cart_delete/<int:id>', views.Delete_CartAPIView.as_view(), name='cart_delete'),
+
 
 
    # get image

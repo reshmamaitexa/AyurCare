@@ -770,6 +770,7 @@ class DoctorPostTreatmentDetailsAPIView(GenericAPIView):
 
 class GetDoctorTreatmentAPIView(GenericAPIView):
     def get(self, request, id):
+        doctor=""
         queryset = Doctor.objects.all().filter(pk=id).values()
         print(queryset)
         for i in queryset:
@@ -865,6 +866,81 @@ class SingleCartAPIView(GenericAPIView):
             obj['image'] = settings.MEDIA_URL + str(obj['medicine_photo'])
         return Response({'data':serialized_data, 'message':'single cart data', 'success':True}, status=status.HTTP_200_OK)
 
+
+
+
+
+class CartIncrementQuantityAPIView(GenericAPIView):
+    
+    def put(self, request, id):
+        cart_item = Cart.objects.get(pk=id)
+
+        qnty=cart_item.medicine_qnty 
+        qty=int(qnty)
+
+        cart_item.medicine_qnty=qty + 1
+
+        q=cart_item.medicine_qnty
+        qn=int(q)
+
+        pr=cart_item.medicine.medicine_price
+        price=int(pr)
+
+        tp=price*qn
+        cart_item.medicine_price=tp
+        
+        cart_item.save()
+
+        serialized_data = CartSerializer(cart_item, context={'request': request}).data
+        base_url = request.build_absolute_uri('/')[:-1]  # Get the base URL dynamically
+        serialized_data['medicine_photo'] = str(serialized_data['medicine_photo']).replace(base_url, '')
+
+        # serialized_data['medicine_photo'] = str(serialized_data['medicine_photo']).split('http://localhost:8000')[1]
+        # for obj in serialized_data:
+        #     obj['image'] = settings.MEDIA_URL + str(obj['image'])
+        return Response({'data': serialized_data, 'message': 'Cart item quantity updated', 'success': True}, status=status.HTTP_200_OK)
+
+
+class CartDecrementQuantityAPIView(GenericAPIView):
+    
+    def put(self, request, id):
+        cart_item = Cart.objects.get(pk=id)
+        qny=cart_item.medicine_qnty
+        qant=int(qny)
+        if qant > 1:
+            qnty=cart_item.medicine_qnty 
+            qty=int(qnty)
+
+            cart_item.medicine_qnty=qty - 1
+
+            q=cart_item.medicine_qnty
+            qn=int(q)
+
+            pr=cart_item.medicine.medicine_price
+            price=int(pr)
+
+            tp=price*qn
+            cart_item.medicine_price=tp
+
+            cart_item.save()
+
+            serialized_data = CartSerializer(cart_item, context={'request': request}).data
+            base_url = request.build_absolute_uri('/')[:-1]  # Get the base URL dynamically
+            serialized_data['medicine_photo'] = str(serialized_data['medicine_photo']).replace(base_url, '')
+
+            # for obj in serialized_data:
+            #     obj['image'] = settings.MEDIA_URL + str(obj['image'])
+            return Response({'data': serialized_data, 'message': 'Cart item quantity updated', 'success': True}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': 'Quantity can not be less than 1', 'success': False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+class Delete_CartAPIView(GenericAPIView):
+    def delete(self, request, id):
+        delmember = Cart.objects.get(pk=id)
+        delmember.delete()
+        return Response({'message':'Cart Deleted successfully',  'success':True}, status=status.HTTP_200_OK)
 
 
 
