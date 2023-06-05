@@ -68,7 +68,13 @@ urlpatterns = [
 
    path('cart_delete/<int:id>', views.Delete_CartAPIView.as_view(), name='cart_delete'),
 
+   path('place_order', views.UserOrderAPIView.as_view(), name='place_order'),
 
+   path('all_order_price/<int:id>', views.AllPriceAPIView.as_view(), name='all_order_price'),
+
+   path('single_user_order_data/<int:id>', views.SingleOrderAPIView.as_view(), name='single_user_order_data'),
+
+   path('user_order_payment', views.UserOrderPaymentAPIView.as_view(), name='user_order_payment'),
 
    # get image
    #  path('package_image/<int:pk>', views.Get_ImageAPIView.as_view(), name='package_image'),

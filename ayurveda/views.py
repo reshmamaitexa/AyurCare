@@ -4,8 +4,8 @@ from django.conf import settings
 from django.db.models import Sum
 from rest_framework import status
 from rest_framework.generics import GenericAPIView
-from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Books, Package_payment_tb, Treatments, Cart
-from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer, PackageBookingSerializer, Package_PaymentSerializer, TreatmentSerializer, CartSerializer
+from .models import Log, Patient, Doctor, Doctor_Booking, Remedy, Packages, Medicine, Review, Complaints, Complaints_Replay, ComplaintsAndReplay, Token_Booking, Package_Books, Package_payment_tb, Treatments, Cart, order, payment
+from ayurveda.serializers import LoginUsersSerializer, PatientRegisterSerializer, doctorRegisterSerializer, DoctorBookingSerializer, RemedySerializer, PackageSerializer, MedicineSerializer, ReviewSerializer, ComplaintsSerializer, ComplaintReplaySerializer, ComplaintsAndReplaySerializer, DoctorTokenBookingSerializer, PackageBookingSerializer, Package_PaymentSerializer, TreatmentSerializer, CartSerializer, OrderSerializer, PaymentSerializer
 from django.db.models import Q
 
 
@@ -942,6 +942,115 @@ class Delete_CartAPIView(GenericAPIView):
         delmember.delete()
         return Response({'message':'Cart Deleted successfully',  'success':True}, status=status.HTTP_200_OK)
 
+
+class UserOrderAPIView(GenericAPIView):
+    serializer_class = OrderSerializer
+
+    def post(self, request):
+        patient = request.data.get('patient')
+        carts = Cart.objects.filter(patient=patient, cart_status=0)
+
+        if not carts.exists():
+            return Response({'message': 'No items in cart to place order', 'success': False}, status=status.HTTP_400_BAD_REQUEST)
+
+    
+        tot = carts.aggregate(total=Sum('medicine_price'))['total']
+        total=str(tot)
+
+        print("=========total   ",total)
+        # for i in total:
+        #     li.append(total)
+        #     print(li)
+
+
+        order_data = []
+        
+        for i in carts:
+           
+
+            order_data.append({
+                'patient': patient,
+                'medicine': i.medicine.id,
+                'medicine_name': i.medicine_name,
+                'medicine_qnty': i.medicine_qnty,
+                'medicine_price':i.medicine_price,
+                'medicine_photo': i.medicine_photo,
+                'order_status': "0",
+                'all_price': total
+            })
+            print("order data==========",order_data)
+            i.cart_status = "1"
+            i.save()
+
+        serializer = self.serializer_class(data=order_data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data': serializer.data, 'message': 'Order placed successfully', 'success': True}, status=status.HTTP_201_CREATED)
+        return Response({'data': serializer.errors, 'message': 'Failed', 'success': False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AllPriceAPIView(GenericAPIView):
+    # serializer_class = OrderPriceSerializer
+
+    def get(self, request,id):
+        # user = request.data.get('user')
+        carts = Cart.objects.filter(patient=id, cart_status=1)
+        print(carts)
+
+        tot = carts.aggregate(total=Sum('medicine_price'))['total']
+        Total_prices=str(tot)
+        print(tot)
+        
+        price_status="0"
+
+        # serializer = self.serializer_class(data= {'user':user, 'total_price':tot,'price_status':price_status})
+        # print(serializer)
+        # if serializer.is_valid():
+        #     serializer.save()
+        return Response({'data':{ 'medicine_price':Total_prices} , 'message': 'Get Order Price successfully', 'success': True}, status=status.HTTP_201_CREATED)
+        # return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+class SingleOrderAPIView(GenericAPIView):
+    def get(self, request, id):
+        qset = Patient.objects.all().filter(pk=id).values()
+        for i in qset:
+            u_id=i['id']
+
+        # data=order.objects.all().filter(user=u_id).values()
+        # print(data)
+
+        data = order.objects.filter(patient=u_id).values()
+        serialized_data = list(data)
+        print(serialized_data)
+        for obj in serialized_data:
+            obj['medicine_photo'] = settings.MEDIA_URL + str(obj['medicine_photo'])
+        return Response({'data':data, 'message':'single order data', 'success':True}, status=status.HTTP_200_OK)
+
+
+
+
+
+class UserOrderPaymentAPIView(GenericAPIView):
+    serializer_class = PaymentSerializer
+
+    def post(self, request):
+        user = request.data.get('user')
+        amount = request.data.get('amount')
+        date = request.data.get('date')
+        paymentstatus="1"
+
+
+        serializer = self.serializer_class(data= {'user':user, 'date':date,'amount':amount,'paymentstatus':paymentstatus})
+        print(serializer)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'data':serializer.data, 'message':'Payment successfull', 'success':True}, status = status.HTTP_201_CREATED)
+        return Response({'data':serializer.errors, 'message':'Failed','success':False}, status=status.HTTP_400_BAD_REQUEST)
 
 
 

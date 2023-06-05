@@ -193,3 +193,21 @@ class Cart(models.Model):
     medicine_price= models.CharField(max_length=500)
     cart_status = models.CharField(max_length=10)
     medicine_photo = models.ImageField(upload_to='images')
+
+
+
+class order(models.Model):
+    patient=models.ForeignKey(Patient,on_delete=models.CASCADE)
+    medicine=models.ForeignKey(Medicine,on_delete=models.CASCADE)
+    medicine_name = models.CharField(max_length=500, blank=True, null=True)
+    medicine_qnty = models.CharField(max_length=500,blank=True, null=True)
+    medicine_price= models.IntegerField()
+    medicine_photo = models.ImageField(upload_to='images', blank=True, null=True)
+    order_status = models.CharField(max_length=10,blank=True, null=True)
+
+
+class payment(models.Model):
+    user=models.ForeignKey(Patient,on_delete=models.CASCADE)
+    amount = models.CharField(max_length=10)
+    date = models.DateField()
+    paymentstatus = models.CharField(max_length=10,default='0')
